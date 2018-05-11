@@ -48,19 +48,7 @@ export default {
         }
 
         let endTime = this.deadline ? this.deadline : this.end;
-        if(endTime instanceof Date) {
-            this.date = Math.trunc(endTime / 1000);
-        } else {
-            this.date = Math.trunc(Date.parse(endTime.replace(/-/g, "/")) / 1000);
-        }
-
-        if (!this.date) {
-            throw new Error("Invalid props value, correct the 'deadline' or 'end'");
-        }
-
-        interval = setInterval(() => {
-            this.now = Math.trunc((new Date()).getTime() / 1000);
-        }, 1000);
+        this.setTimer(endTime);
     },
     computed: {
         seconds() {
@@ -87,6 +75,24 @@ export default {
                 // Remove interval
                 clearInterval(interval);
             }
+        }
+    },
+    methods: {
+        setTimer(endTime) {
+            if(endTime instanceof Date) {
+                this.date = Math.trunc(endTime / 1000);
+            } else {
+                this.date = Math.trunc(Date.parse(endTime.replace(/-/g, "/")) / 1000);
+            }
+
+            if (!this.date) {
+                throw new Error("Invalid props value, correct the 'deadline' or 'end'");
+            }
+
+            if(interval) clearInterval(interval);
+            interval = setInterval(() => {
+                this.now = Math.trunc((new Date()).getTime() / 1000);
+            }, 1000);
         }
     },
     filters: {
