@@ -26,10 +26,10 @@ export default {
     name: 'vuejsCountDown',
     props: {
         deadline: {
-            type: String
+            type: [String, Date]
         },
         end: {
-            type: String
+            type: [String, Date]
         },
         stop: {
             type: Boolean
@@ -48,7 +48,11 @@ export default {
         }
 
         let endTime = this.deadline ? this.deadline : this.end;
-        this.date = Math.trunc(Date.parse(endTime.replace(/-/g, "/")) / 1000);
+        if(endTime instanceof Date) {
+            this.date = endTime;
+        } else {
+            this.date = Math.trunc(Date.parse(endTime.replace(/-/g, "/")) / 1000);
+        }
 
         if (!this.date) {
             throw new Error("Invalid props value, correct the 'deadline' or 'end'");
