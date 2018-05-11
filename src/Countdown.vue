@@ -49,7 +49,7 @@ export default {
 
         let endTime = this.deadline ? this.deadline : this.end;
         if(endTime instanceof Date) {
-            this.date = endTime;
+            this.date = Math.trunc(endTime / 1000);
         } else {
             this.date = Math.trunc(Date.parse(endTime.replace(/-/g, "/")) / 1000);
         }
